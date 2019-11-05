@@ -59,7 +59,6 @@ class Connect4:
         # that completes two sequences, provided this function is called after every move
         # This means it should be fine to just take the first item in the 'wins' list to
         # determine the winner
-        # TODO: win message
         wins = self.check_sequence(4)
         return wins[0]['player'] if wins else None
 
