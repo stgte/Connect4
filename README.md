@@ -7,4 +7,4 @@ Tea: Base agent
 
 Josh: connect4Game.py file
 
-Christian: research some other methods, help out if needed :)
+Christian: HumanPlayer(), research some other methods, help out if needed :)
