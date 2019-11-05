@@ -1,4 +1,6 @@
 #Basic connect 4 game setup
+#TODO add get_valid_moves, mb mess with print a little
+
 
 import operator, numpy
 
@@ -52,6 +54,16 @@ class Connect4:
 
         # If we get here, then it should be because nothing can be placed here
         return False
+
+
+    #returns a list of which columns are valid to place a move in (will be 0 - 6)
+    def get_valid_moves(self):
+        moves = []
+        top = self.ROWS - 1
+        for i in range(self.COLUMNS):
+            if not self.board[top, i]:
+                moves.append(i)
+        return moves
 
     # Returns the player no. if someone has won
     def check_win(self):
