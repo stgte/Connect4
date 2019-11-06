@@ -5,11 +5,12 @@ class HumanPlayer:
     def get_move(self, board):
         movelist= board.calc_valid_moves()
         move = input("Enter column number:")
-        if move in movelist:
-            final = int(move)
-            return final
-        else:
+
+
+        while move not in movelist:
             print("Invalid move")
+            move = input("Enter column number:")
+        return int(move)
 
 
 
