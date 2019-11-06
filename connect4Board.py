@@ -1,25 +1,28 @@
 #Basic connect 4 game setup
+#TODO add get_valid_moves, mb mess with print a little
+
 
 import operator, numpy
 
-class Connect4:
+class Connect4Board:
 
+    def __init__(self):
     # Constants
-    ROWS = 6
-    COLUMNS = 7
-    DIRECTIONS = { # for convenience
-        'n' :   (-1, 0),
-        'ne':   (-1, 1),
-        'e' :   ( 0, 1),
-        'se':   ( 1, 1),
-        's' :   ( 1, 0),
-        'sw':   ( 1,-1),
-        'w' :   ( 0,-1),
-        'nw':   (-1,-1)
-    }
+        self.rows = 6
+        self.columns = 7
+        DIRECTIONS = { # for convenience
+            'n' :   (-1, 0),
+            'ne':   (-1, 1),
+            'e' :   ( 0, 1),
+            'se':   ( 1, 1),
+            's' :   ( 1, 0),
+            'sw':   ( 1,-1),
+            'w' :   ( 0,-1),
+            'nw':   (-1,-1)
+        }
 
-    # Make an empty board
-    board = numpy.zeros(shape=(ROWS,COLUMNS),dtype=int)
+        # Make an empty board
+        self.board = numpy.zeros(shape=(self.rows,self.columns),dtype=int)
 
     def print_board(self):
 
@@ -33,7 +36,7 @@ class Connect4:
     def add_disc(self, column, player):
 
         # Validate column and player numbers
-        if not column < self.COLUMNS:
+        if not column < self.columns:
             print ("Invalid column number! Try again.")
             return False
         if player > 2:
@@ -52,6 +55,16 @@ class Connect4:
 
         # If we get here, then it should be because nothing can be placed here
         return False
+
+
+    #returns a list of which columns are valid to place a move in (will be 0 - 6)
+    def calc_valid_moves(self):
+        moves = []
+        top = self.rows - 1
+        for i in range(self.columns):
+            if not self.board[top, i]:
+                moves.append(i)
+        return moves
 
     # Returns the player no. if someone has won
     def check_win(self):
@@ -102,7 +115,7 @@ class Connect4:
             print ("Invalid direction in follow_sequence")
             return False
 
-        if not (row < self.COLUMNS and column < self.ROWS):
+        if not (row < self.columns and column < self.rows):
             print ("Invalid row/column.")
             return False
 
@@ -119,14 +132,14 @@ class Connect4:
 
     # Returns a dictionary with the values of the surrounding points
     def get_next_values(self, column, row):
-        if not (column < self.COLUMNS and row < self.ROWS):
+        if not (column < self.columns and row < self.ROWS):
             print ("Invalid row/column.")
             return False
 
         # Pad board with -1, so we don't get any index errors
-        paddedBoard = numpy.empty((self.ROWS+2, self.COLUMNS+2), dtype=int)
+        paddedBoard = numpy.empty((self.rows+2, self.columns+2), dtype=int)
         paddedBoard[:,:] = -1
-        paddedBoard[1:self.ROWS+1, 1:self.COLUMNS+1] = self.board.reshape(self.ROWS, self.COLUMNS)
+        paddedBoard[1:self.rows+1, 1:self.columns+1] = self.board.reshape(self.rows, self.columns)
 
         # Get the surrounding cells
         return dict(zip(["nw", "n", "ne", "w", "x", "e", "sw", "s", "se"], (paddedBoard[column:column+3, row:row+3]).ravel()))
