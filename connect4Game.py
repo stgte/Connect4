@@ -1,5 +1,6 @@
 from connect4Board import Connect4Board
 import datetime
+import copy
 
 
 class Connect4Game:
@@ -11,11 +12,12 @@ class Connect4Game:
         self.board = Connect4Board()
         self.decision_times = {self.player1.symbol: 0, self.player2.symbol: 0}
         self.play_game()
+        self.playerToNum = {player1: 0, player2: 1}
 
     def play_game(self):
         if self.show_status:
-            self.board.draw_board()
-        while self.board.game_continues():
+            self.board.print_board()
+        while not self.board.check_win():
             self.play_round()
         if self.show_status:
             print("Game over, Final Scores:")
@@ -30,15 +32,17 @@ class Connect4Game:
         self.decision_times[self.player2.symbol] += (datetime.now()-start).total_seconds()
 
     def play_move(self, player):
-        if self.board.calc_valid_moves(player.symbol):
+        if self.board.calc_valid_moves():
             chosen_move = player.get_move(copy.deepcopy(self.board))
-            if not self.board.make_move(player.symbol, chosen_move):
+            if not self.board.add_disc(chosen_move, self.playerToNum[player]):
                 print("Error: invalid move made")
             elif self.show_status:
-                self.board.draw_board()
+                self.board.print_board()
                 print_scores(self.board.calc_scores())
         elif self.show_status:
             print(player.symbol, "can't move.")
+
+    #TODO fix calc_winner
 
     def calc_winner(self):
         scores = self.board.calc_scores()
@@ -58,7 +62,7 @@ def print_scores(score_map):
     print()
 
 
-def compare_players(player1, player2, board_size=8, board_filename=None):
+def compare_players(player1, player2):
     game_count_map = {player1.symbol: 0, player2.symbol: 0, "TIE": 0}
     time_elapsed_map = {player1.symbol: 0, player2.symbol: 0}
     for i in range(1, 11):
@@ -67,9 +71,9 @@ def compare_players(player1, player2, board_size=8, board_filename=None):
 
         # swap who goes first
         if i % 2 == 0:
-            game = Connect4Game(player1, player2, show_status=False, board_size=board_size, board_filename=board_filename)
+            game = Connect4Game(player1, player2, show_status=False)
         else:
-            game = Connect4Game(player2, player1, show_status=False, board_size=board_size, board_filename=board_filename)
+            game = Connect4Game(player2, player1, show_status=False)
 
         game_count_map[game.calc_winner()] += 1
         decision_times = game.get_decision_times()

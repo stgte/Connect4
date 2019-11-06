@@ -58,7 +58,7 @@ class Connect4Board:
 
 
     #returns a list of which columns are valid to place a move in (will be 0 - 6)
-    def get_valid_moves(self):
+    def calc_valid_moves(self):
         moves = []
         top = self.rows - 1
         for i in range(self.columns):
