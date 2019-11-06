@@ -39,7 +39,7 @@ class Connect4Game:
                 print("Error: invalid move made")
             elif self.show_status:
                 self.board.print_board()
-                print_scores(self.board.calc_scores())
+                print_scores(self.board.check_win())
         elif self.show_status:
             print(player.symbol, "can't move.")
 
@@ -63,10 +63,8 @@ class Connect4Game:
     def get_decision_times(self):
         return self.decision_times
 
-def print_scores(score_map):
-    for symbol in score_map:
-        print(symbol, ":", score_map[symbol], end="\t")
-    print()
+def print_scores(winner):
+    print(winner)
 
 
 def compare_players(player1, player2):
