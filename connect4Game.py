@@ -12,7 +12,7 @@ class Connect4Game:
         self.show_status = show_status
         self.board = Connect4Board()
         self.decision_times = {self.player1.symbol: 0, self.player2.symbol: 0}
-        self.playerToNum = {self.player1.playerNum: 1, self.player2.playerNum: 2}
+        self.playerToNum = {player1: 1, player2: 2}
         self.play_game()
 
 
@@ -90,7 +90,7 @@ def compare_players(player1, player2):
 
 
 def main():
-    Connect4Game(HumanPlayer("X"), HumanPlayer("O"))
+    Connect4Game(HumanPlayer("X",1), HumanPlayer("O",2))
     # compare_players(RandomComputerPlayer("X"), RandomComputerPlayer("O"))
 
 
