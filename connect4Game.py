@@ -42,16 +42,23 @@ class Connect4Game:
         elif self.show_status:
             print(player.symbol, "can't move.")
 
-    #TODO fix calc_winner
 
     def calc_winner(self):
-        scores = self.board.calc_scores()
-        if scores[self.player1.symbol] > scores[self.player2.symbol]:
-            return self.player1.symbol
-        if scores[self.player1.symbol] < scores[self.player2.symbol]:
-            return self.player2.symbol
+        # scores = self.board.calc_scores()
+        # if scores[self.player1.symbol] > scores[self.player2.symbol]:
+        #     return self.player1.symbol
+        # if scores[self.player1.symbol] < scores[self.player2.symbol]:
+        #     return self.player2.symbol
+        # else:
+        #     return "TIE"
+        winner = self.board.check_win()
+        if winner == 1:
+            return "X"
+        elif winner == 0:
+            return "O"
         else:
             return "TIE"
+
 
     def get_decision_times(self):
         return self.decision_times
