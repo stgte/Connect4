@@ -20,8 +20,8 @@ class Connect4Game:
         while not self.board.check_win():
             self.play_round()
         if self.show_status:
-            print("Game over, Final Scores:")
-            print_scores(self.board.calc_scores())
+            print("Game over, Final Winner:")
+            print(self.board.calc_winner())
 
     def play_round(self):
         start = datetime.now()
@@ -41,7 +41,6 @@ class Connect4Game:
                 print_scores(self.board.calc_scores())
         elif self.show_status:
             print(player.symbol, "can't move.")
-
 
     def calc_winner(self):
         # scores = self.board.calc_scores()
