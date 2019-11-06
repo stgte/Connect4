@@ -132,7 +132,7 @@ class Connect4Board:
 
     # Returns a dictionary with the values of the surrounding points
     def get_next_values(self, column, row):
-        if not (column < self.columns and row < self.ROWS):
+        if not (column < self.columns and row < self.rows):
             print ("Invalid row/column.")
             return False
 
