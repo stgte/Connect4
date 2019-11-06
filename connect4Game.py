@@ -11,7 +11,7 @@ class Connect4Game:
         self.show_status = show_status
         self.board = Connect4Board()
         self.decision_times = {self.player1.symbol: 0, self.player2.symbol: 0}
-        self.playerToNum = {player1: 0, player2: 1}
+        self.playerToNum = {player1: 1, player2: 2}
         self.play_game()
 
 
@@ -54,7 +54,7 @@ class Connect4Game:
         winner = self.board.check_win()
         if winner == 1:
             return "X"
-        elif winner == 0:
+        elif winner == 2:
             return "O"
         else:
             return "TIE"
