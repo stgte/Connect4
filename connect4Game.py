@@ -1,5 +1,5 @@
 from connect4Board import Connect4Board
-import datetime
+from datetime import datetime
 import copy
 from connect4Players import *
 
@@ -12,7 +12,7 @@ class Connect4Game:
         self.show_status = show_status
         self.board = Connect4Board()
         self.decision_times = {self.player1.symbol: 0, self.player2.symbol: 0}
-        self.playerToNum = {player1: 1, player2: 2}
+        self.playerToNum = {self.player1.playerNum: 1, self.player2.playerNum: 2}
         self.play_game()
 
 
@@ -87,3 +87,12 @@ def compare_players(player1, player2):
             time_elapsed_map[symbol] += decision_times[symbol]
     print(game_count_map)
     print(time_elapsed_map)
+
+
+def main():
+    Connect4Game(HumanPlayer("X"), HumanPlayer("O"))
+    # compare_players(RandomComputerPlayer("X"), RandomComputerPlayer("O"))
+
+
+if __name__ == "__main__":
+    main()

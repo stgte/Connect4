@@ -1,5 +1,6 @@
 class HumanPlayer:
-    def __init__(self, playerNum):
+    def __init__(self, symbol, playerNum):
+        self.symbol = symbol
         self.playerNum = playerNum
 
     def get_move(self, board):
