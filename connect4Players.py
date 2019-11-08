@@ -1,3 +1,6 @@
+import random
+
+
 class HumanPlayer:
     def __init__(self, symbol, playerNum):
         self.symbol = symbol
@@ -12,6 +15,15 @@ class HumanPlayer:
             print("Invalid move")
             move = int(input("Enter column number:"))
         return move
+
+class RandomComputerPlayer:
+
+    def __init__(self, symbol, playerNum):
+        self.symbol = symbol
+        self.playerNum= playerNum
+
+    def get_move(self, board):
+        return random.choice(board.calc_valid_moves())
 
 
 
