@@ -15,7 +15,7 @@ def diagonalsNeg (matrix, cols, rows):
     for di in ([(j, i - cols + j + 1) for j in range(cols)] for i in range(cols + rows - 1)):
         yield [matrix[i][j] for i, j in di if i >= 0 and j >= 0 and i < cols and j < rows]
 
-class Game:
+class Board:
     def __init__ (self, cols = 7, rows = 6, requiredToWin = 4):
         """Create a new game."""
         self.cols = cols
@@ -85,7 +85,7 @@ class Game:
 
 
 if __name__ == '__main__':
-    g = Game()
+    g = Board()
     turn = RED
     while True:
         g.printBoard()
