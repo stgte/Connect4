@@ -1,7 +1,7 @@
-from connect4Board import Connect4Board
+from game.connect4Board import Connect4Board
 from datetime import datetime
 import copy
-from connect4Players import *
+from game.connect4Players import *
 
 
 class Connect4Game:
