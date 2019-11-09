@@ -26,7 +26,6 @@ class Board:
     def insert (self, column, color):
         """Insert the color in the given column."""
         c = self.board[column]
-        print(self.getValidMoves())
         if c[0] != NONE:
             raise Exception('Column is full')
 
@@ -52,17 +51,21 @@ class Board:
         else:
             return False
 
-    def isValid(self):
-        pass
+    def stillGoing(self):
+        moves = self.getValidMoves()
+        if moves:
+            return True
+        else:
+            return False
 
-    def checkForWin (self):
+    def checkForWin(self):
         """Check the current board for a winner."""
         w = self.getWinner()
         if w:
             self.printBoard()
             raise Exception(w + ' won!')
 
-    def getWinner (self):
+    def getWinner(self):
         """Get the winner on the current board."""
         lines = (
             self.board, # columns
@@ -75,6 +78,9 @@ class Board:
             for color, group in groupby(line):
                 if color != NONE and len(list(group)) >= self.win:
                     return color
+
+
+        return None
 
     def printBoard (self):
         """Print the board."""
