@@ -34,7 +34,6 @@ class Board:
             i -= 1
         c[i] = color
 
-        self.checkForWin()
 
     def getValidMoves(self):
         moves = []
@@ -53,7 +52,7 @@ class Board:
 
     def stillGoing(self):
         moves = self.getValidMoves()
-        if moves:
+        if moves and (not self.getWinner()):
             return True
         else:
             return False
