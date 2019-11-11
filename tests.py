@@ -1,4 +1,4 @@
-from game.gameFile import Game
+from game.game import Game
 from game.connect4Players import *
 
 
