@@ -25,6 +25,8 @@ class Board:
 
     def insert (self, column, color):
         """Insert the color in the given column."""
+        if column not in self.getValidMoves():
+            raise Exception('Invalid Entry')
         c = self.board[column]
         if c[0] != NONE:
             raise Exception('Column is full')
