@@ -40,7 +40,7 @@ class MinimaxPlayer:
     def get_move(self, board):
         if len(board.getValidMoves()) == 1:
             return board.getValidMoves()[0]
-        answer = minimax(board, 2, self.symbol, True)
+        answer = minimax(board, 4, self.symbol, True)
         return answer[0]
 
 
@@ -51,12 +51,13 @@ def minimax(board, depth, symbol, max):
         best = [-1, inf]
 
     if (not board.stillGoing()):
-        return [-1, heuristic(board)]
+        return [-1, heuristic(board, symbol)]
 
     elif depth == 0 or len(board.getValidMoves()) == 0:
-        return [-1, heuristic(board)]
-
-    for move in board.getValidMoves():
+        return [-1, heuristic(board, symbol)]
+    moves = board.getValidMoves()
+    random.shuffle(moves)
+    for move in moves:
         baseBoard = copy.deepcopy(board)
         baseBoard.insert(move, symbol)
         score = minimax(baseBoard, depth - 1, flipSymbol(symbol), not max)
@@ -72,28 +73,26 @@ def minimax(board, depth, symbol, max):
 
     return best
 
-def heuristic(board):
+def heuristic(board, symbol):
     heur = 0
     state = board.board
-    print(state)
     for i in range(0, board.rows):
         for j in range(0, board.cols):
             # check horizontal streaks
             try:
-                # add player one streak scores to heur
-                if state[i][j] == state[i + 1][j] == 0:
+                if state[i][j] == state[i + 1][j] == symbol:
                     heur += 10
-                if state[i][j] == state[i + 1][j] == state[i + 2][j] == 0:
+                if state[i][j] == state[i + 1][j] == state[i + 2][j] == symbol:
                     heur += 100
-                if state[i][j] == state[i + 1][j] == state[i + 2][j] == state[i + 3][j] == 0:
+                if state[i][j] == state[i + 1][j] == state[i + 2][j] == state[i + 3][j] ==  symbol:
                     heur += 10000
 
                 # subtract player two streak score to heur
-                if state[i][j] == state[i + 1][j] == 1:
+                if state[i][j] == state[i + 1][j] == flipSymbol(symbol):
                     heur -= 10
-                if state[i][j] == state[i + 1][j] == state[i + 2][j] == 1:
+                if state[i][j] == state[i + 1][j] == state[i + 2][j] == flipSymbol(symbol):
                     heur -= 100
-                if state[i][j] == state[i + 1][j] == state[i + 2][j] == state[i + 3][j] == 1:
+                if state[i][j] == state[i + 1][j] == state[i + 2][j] == state[i + 3][j] == flipSymbol(symbol):
                     heur -= 10000
             except IndexError:
                 pass
@@ -101,19 +100,19 @@ def heuristic(board):
             # check vertical streaks
             try:
                 # add player one vertical streaks to heur
-                if state[i][j] == state[i][j + 1] == 0:
+                if state[i][j] == state[i][j + 1] ==  symbol:
                     heur += 10
-                if state[i][j] == state[i][j + 1] == state[i][j + 2] == 0:
+                if state[i][j] == state[i][j + 1] == state[i][j + 2] == symbol:
                     heur += 100
-                if state[i][j] == state[i][j + 1] == state[i][j + 2] == state[i][j + 3] == 0:
+                if state[i][j] == state[i][j + 1] == state[i][j + 2] == state[i][j + 3] ==  symbol:
                     heur += 10000
 
                 # subtract player two streaks from heur
-                if state[i][j] == state[i][j + 1] == 1:
+                if state[i][j] == state[i][j + 1] == flipSymbol(symbol):
                     heur -= 10
-                if state[i][j] == state[i][j + 1] == state[i][j + 2] == 1:
+                if state[i][j] == state[i][j + 1] == state[i][j + 2] == flipSymbol(symbol):
                     heur -= 100
-                if state[i][j] == state[i][j + 1] == state[i][j + 2] == state[i][j + 3] == 1:
+                if state[i][j] == state[i][j + 1] == state[i][j + 2] == state[i][j + 3] == flipSymbol(symbol):
                     heur -= 10000
             except IndexError:
                 pass
@@ -121,21 +120,21 @@ def heuristic(board):
             # check positive diagonal streaks
             try:
                 # add player one streaks to heur
-                if not j + 3 > board.cols and state[i][j] == state[i + 1][j + 1] == 0:
+                if not j + 3 > board.cols and state[i][j] == state[i + 1][j + 1] ==  symbol:
                     heur += 100
-                if not j + 3 > board.cols and state[i][j] == state[i + 1][j + 1] == state[i + 2][j + 2] == 0:
+                if not j + 3 > board.cols and state[i][j] == state[i + 1][j + 1] == state[i + 2][j + 2] ==  symbol:
                     heur += 100
                 if not j + 3 > board.cols and state[i][j] == state[i + 1][j + 1] == state[i + 2][j + 2] \
-                        == state[i + 3][j + 3] == 0:
+                        == state[i + 3][j + 3] == symbol:
                     heur += 10000
 
                 # add player two streaks to heur
-                if not j + 3 > board.cols and state[i][j] == state[i + 1][j + 1] == 1:
+                if not j + 3 > board.cols and state[i][j] == state[i + 1][j + 1] == flipSymbol(symbol):
                     heur -= 100
-                if not j + 3 > board.cols and state[i][j] == state[i + 1][j + 1] == state[i + 2][j + 2] == 1:
+                if not j + 3 > board.cols and state[i][j] == state[i + 1][j + 1] == state[i + 2][j + 2] == flipSymbol(symbol):
                     heur -= 100
                 if not j + 3 > board.cols and state[i][j] == state[i + 1][j + 1] == state[i + 2][j + 2] \
-                        == state[i + 3][j + 3] == 1:
+                        == state[i + 3][j + 3] == flipSymbol(symbol):
                     heur -= 10000
             except IndexError:
                 pass
@@ -143,21 +142,21 @@ def heuristic(board):
             # check negative diagonal streaks
             try:
                 # add  player one streaks
-                if not j - 3 < 0 and state[i][j] == state[i + 1][j - 1] == 0:
+                if not j - 3 < 0 and state[i][j] == state[i + 1][j - 1] ==  symbol:
                     heur += 10
-                if not j - 3 < 0 and state[i][j] == state[i + 1][j - 1] == state[i + 2][j - 2] == 0:
+                if not j - 3 < 0 and state[i][j] == state[i + 1][j - 1] == state[i + 2][j - 2] ==  symbol:
                     heur += 100
                 if not j - 3 < 0 and state[i][j] == state[i + 1][j - 1] == state[i + 2][j - 2] \
-                        == state[i + 3][j - 3] == 0:
+                        == state[i + 3][j - 3] == symbol:
                     heur += 10000
 
                 # subtract player two streaks
-                if not j - 3 < 0 and state[i][j] == state[i + 1][j - 1] == 1:
+                if not j - 3 < 0 and state[i][j] == state[i + 1][j - 1] == flipSymbol(symbol):
                     heur -= 10
-                if not j - 3 < 0 and state[i][j] == state[i + 1][j - 1] == state[i + 2][j - 2] == 1:
+                if not j - 3 < 0 and state[i][j] == state[i + 1][j - 1] == state[i + 2][j - 2] == flipSymbol(symbol):
                     heur -= 100
                 if not j - 3 < 0 and state[i][j] == state[i + 1][j - 1] == state[i + 2][j - 2] \
-                        == state[i + 3][j - 3] == 1:
+                        == state[i + 3][j - 3] == flipSymbol(symbol):
                     heur -= 10000
             except IndexError:
                 pass
@@ -171,22 +170,21 @@ class AlphaBetaPlayer:
     def get_move(self, board):
         if len(board.getValidMoves()) == 1:
             return board.getValidMoves()[0]
-        answer = AlphaBeta(board, 4, self.symbol)
-        # print(answer)
+        answer = AlphaBeta(board, 2, self.symbol)
         return answer[0]
 
 
 def AlphaBeta(board, depth, symbol):
     def max_value(board, alpha, beta, symbol, depth):
         if not board.stillGoing():
-            return [-1, heuristic(board)]
+            return [-1, heuristic(board, symbol)]
 
         elif depth == 0 or len(board.getValidMoves()) == 0:
-            return [-1, -1, heuristic(board)]
+            return [-1, -1, heuristic(board, symbol)]
         best = [-1, -inf]
-
-
-        for move in board.getValidMoves():
+        moves=board.getValidMoves()
+        random.shuffle(moves)
+        for move in moves:
             copied_board = copy.deepcopy(board)
             copied_board.insert( move, symbol)
             score = min_value(copied_board, alpha, beta, flipSymbol(symbol), depth - 1)
@@ -200,13 +198,14 @@ def AlphaBeta(board, depth, symbol):
 
     def min_value(board, alpha, beta, symbol, depth):
         if not board.stillGoing():
-            return [-1, -1,heuristic(board)]
+            return [-1, -1,heuristic(board, symbol)]
         elif depth == 0 or len(board.getValidMoves()) == 0:
-            return [-1, -1, heuristic(board)]
+            return [-1, heuristic(board, symbol)]
 
-        best = [-1, -1, inf]
-
-        for move in board.getValidMoves():
+        best = [-1, inf]
+        moves = board.getValidMoves()
+        random.shuffle(moves)
+        for move in moves:
             copied_board = copy.deepcopy(board)
             copied_board.insert(move, symbol)
             score = max_value(copied_board, alpha, beta, flipSymbol(symbol), depth - 1)
