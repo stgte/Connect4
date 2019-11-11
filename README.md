@@ -20,3 +20,5 @@ Agent Interface: The agent has gets access to the board via get_move, the agent 
 
 Simulation Interface: If you want to observe a game, construct the game object with show_status = True, this way the game will print the board before each turn (via print_board), as well as print the winner at the end of the game. The results of many games can be expressed via compare_players.
 
+Unit Testing FrameWork: We made our own functions to test insert as well as checkwin, for the  most part it makes more sense to test the full game manually.
+
