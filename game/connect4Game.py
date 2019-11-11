@@ -90,6 +90,7 @@ def compare_players(player1, player2):
 
 
 def main():
+    Connect4Game(MinimaxPlayer("X"))
     Connect4Game(HumanPlayer("X",1), HumanPlayer("O",2))
     # compare_players(RandomComputerPlayer("X"), RandomComputerPlayer("O"))
 

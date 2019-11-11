@@ -57,6 +57,11 @@ class Game:
             return "TIE"
 
 def main():
+    game = Game(MinimaxPlayer("R"), RandomComputerPlayer("Y"), show_status=True)
+    game = Game(RandomComputerPlayer("R"), MinimaxPlayer("Y"), show_status=True)
+    game = Game(HumanPlayer("R"), MinimaxPlayer("Y"), show_status=True)
+
+
     game = Game(HumanPlayer("R"), HumanPlayer("Y"), show_status=True)
     print("Finished")
 
