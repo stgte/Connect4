@@ -1,4 +1,4 @@
-from game.board import Board
+from game.conncet4Board import Board
 from game.connect4Players import *
 from datetime import datetime
 import copy
@@ -82,12 +82,12 @@ def compare_players(player1, player2):
 
 def main():
     # game = Game(MinimaxPlayer("R"), MinimaxPlayer("Y"), show_status=True)
-    compare_players(AlphaBetaPlayer("R"), MinimaxPlayer("Y"))
-    compare_players(MinimaxPlayer("R"), AlphaBetaPlayer("Y"))
+    # compare_players(AlphaBetaPlayer("R"), MinimaxPlayer("Y"))
+    # compare_players(MinimaxPlayer("R"), AlphaBetaPlayer("Y"))
     # game = Game(AlphaBetaPlayer("R"), MinimaxPlayer("Y"), show_status=True)
     # game = Game( MinimaxPlayer("R"), AlphaBetaPlayer("Y"), show_status=True)
     # game = Game(RandomComputerPlayer("R"), MinimaxPlayer("Y"), show_status=True)
-    # game = Game( MinimaxPlayer("R"),RandomComputerPlayer("Y"), show_status=True)
+    game = Game( HumanPlayer("R"),RandomComputerPlayer("Y"), show_status=True)
     # game = Game(HumanPlayer("R"), MinimaxPlayer("Y"), show_status=True)
 
 
