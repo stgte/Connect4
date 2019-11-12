@@ -1,4 +1,4 @@
-from game.conncet4Board import Board
+from game.connect4Board import Board
 from game.connect4Players import *
 from datetime import datetime
 import copy

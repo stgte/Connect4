@@ -1,7 +1,7 @@
 
 from game.connect4Game import Game
 from game.connect4Players import *
-from game.conncet4Board import Board
+from game.connect4Board import Board
 
 
 
