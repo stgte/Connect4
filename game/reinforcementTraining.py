@@ -36,6 +36,8 @@ class ReinforcementAgent:
     def exploration_move(self, board):
         if np.random.uniform(0, 1) <= self.exp_rate: #exploratory move (random)
             return random.choice(board.getValidMoves())
+        else:
+
 
 
 

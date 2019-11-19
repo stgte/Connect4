@@ -164,13 +164,14 @@ def heuristic(board, symbol):
 
 
 class AlphaBetaPlayer:
-    def __init__(self, symbol):
+    def __init__(self, symbol, depth):
         self.symbol = symbol
+        self.depth = depth
 
     def get_move(self, board):
         if len(board.getValidMoves()) == 1:
             return board.getValidMoves()[0]
-        answer = AlphaBeta(board, 2, self.symbol)
+        answer = AlphaBeta(board, self.depth, self.symbol)
         return answer[0]
 
 

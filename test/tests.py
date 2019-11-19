@@ -1,5 +1,5 @@
 
-from game.connect4Game import Game
+from game.connect4Game import Game, compare_players
 from game.connect4Players import *
 from game.connect4Board import Board
 
@@ -34,9 +34,16 @@ def insertTest():
 
     return
 
+def improvement_demo():
+    compare_players(AlphaBetaPlayer("R", 2), AlphaBetaPlayer("Y", 2), 2)
+    compare_players(AlphaBetaPlayer("R", 2), AlphaBetaPlayer("Y", 4), 2)
+    compare_players(AlphaBetaPlayer("R", 2), AlphaBetaPlayer("Y", 6), 2)
+    compare_players(AlphaBetaPlayer("R", 2), AlphaBetaPlayer("Y", 8), 2)
+    compare_players(AlphaBetaPlayer("R", 2), AlphaBetaPlayer("Y", 10), 2)
+
 
 def main():
-    insertTest()
+    improvement_demo()
 
 
 

@@ -59,11 +59,11 @@ class Game:
     def get_decision_times(self):
         return self.decision_times
 
-def compare_players(player1, player2):
+def compare_players(player1, player2, numGames):
     game_count_map = {player1.symbol: 0, player2.symbol: 0, "TIE": 0}
     time_elapsed_map = {player1.symbol: 0, player2.symbol: 0}
-    for i in range(1, 11):
-        if i % 1 == 0:
+    for i in range(1, numGames + 1):
+        if i % 10 == 0:
             # pass
             print(i, "games finished")
 
