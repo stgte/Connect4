@@ -15,6 +15,14 @@ Josh: game.py file
 
 Christian:  Human Player(), research some other methods, help out if needed
 
+Week 2 Jobs:
+
+Tea:AlphaBeta
+
+Josh: Started setting up Neural Network + tests for currently existent code
+
+Christian: Tests, research
+
 
 Agent Interface: The agent has gets access to the board via get_move, the agent can see the game board, and returns the move it wants to make with get_move. Those moves are then made using the boards insert function. The agent should be returning an integer, 0-6 if using a board 7 columns wide.
 
@@ -29,4 +37,6 @@ One technique we want to apply is reinforcement learning. The idea is that we wi
 This technique is often used for games, most of the examples I've found are for turn based games like checkers or chess, but I've also seen examples that play the game snake. Obviously if this technique is used a lot for turn based games then it should apply to Connect 4 quite well. The main challenge is probably going to be tuning the exploration rate as we go, so that the agent continues exploring new moves but also holds on to old, effective moves so it doesn't forget the progress it makes.
 
 Monte Carlo Tree Search - The idea behind this algorithm is to create a game tree, but instead of exploring all the possible games, only the most promising routes are chosen. It is a heuristic driven search algorithm that combines the classic tree search implementations alongside machine learning principles of reinforcement learning. In tree search, there’s always the possibility that the current best action is actually not the most optimal action. In such cases, MCTS algorithm becomes useful as it continues to evaluate other alternatives periodically during the learning phase by executing them, instead of the current perceived optimal strategy.
+
+We want to implement DeepMind's AlphaZero algorithm which would potentially solve the game. It will include Monte Carlo tree search in order to perform search as well as deep convolutional residual neural network. We will try to evaluate neural network and solve the game.
 
