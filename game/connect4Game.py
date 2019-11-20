@@ -87,7 +87,7 @@ def main():
     # game = Game(AlphaBetaPlayer("R"), MinimaxPlayer("Y"), show_status=True)
     # game = Game( MinimaxPlayer("R"), AlphaBetaPlayer("Y"), show_status=True)
     # game = Game(RandomComputerPlayer("R"), MinimaxPlayer("Y"), show_status=True)
-    game = Game( HumanPlayer("R"),RandomComputerPlayer("Y"), show_status=True)
+    game = Game(MinimaxPlayer("R"),AlphaBetaPlayer("Y", 8), show_status=True)
     # game = Game(HumanPlayer("R"), MinimaxPlayer("Y"), show_status=True)
 
 

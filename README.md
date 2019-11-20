@@ -22,3 +22,8 @@ Simulation Interface: If you want to observe a game, construct the game object w
 
 Unit Testing FrameWork: We made our own functions to test insert as well as checkwin, for the  most part it makes more sense to test the full game manually.
 
+Advanced AI:
+
+One technique we want to apply is reinforcement learning. The idea is that we will have two agents that start with no idea how to play Connect 4 play many many games against each other, rewarding their moves when they win and punishing them when they lose. Eventually, we should have a highly effective agent, hopefully one that has solved the game. We've mainly been learning about implementation through various tech blogs.
+
+This technique is often used for games, most of the examples I've found are for turn based games like checkers or chess, but I've also seen examples that play the game snake. Obviously if this technique is used a lot for turn based games then it should apply to Connect 4 quite well. The main challenge is probably going to be tuning the exploration rate as we go, so that the agent continues exploring new moves but also holds on to old, effective moves so it doesn't forget the progress it makes.
