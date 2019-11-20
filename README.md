@@ -40,3 +40,7 @@ Monte Carlo Tree Search - The idea behind this algorithm is to create a game tre
 
 We want to implement DeepMind's AlphaZero algorithm which would potentially solve the game. It will include Monte Carlo tree search in order to perform search as well as deep convolutional residual neural network. We will try to evaluate neural network and solve the game.
 
+Resources:
+https://towardsdatascience.com/from-scratch-implementation-of-alphazero-for-connect4-f73d4554002a
+
+
