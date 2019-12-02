@@ -64,9 +64,9 @@ def compare_players(player1, player2, numGames):
     game_count_map = {player1.symbol: 0, player2.symbol: 0, "TIE": 0}
     time_elapsed_map = {player1.symbol: 0, player2.symbol: 0}
     for i in range(1, numGames + 1):
-        if i % 10 == 0:
-            # pass
-            print(i, "games finished")
+    #     if i % 10 == 0:
+    #         # pass
+    #         print(i, "games finished")
 
         # swap who goes first
         if i % 2 == 0:
@@ -80,6 +80,38 @@ def compare_players(player1, player2, numGames):
             time_elapsed_map[symbol] += decision_times[symbol]
     print(game_count_map)
     print(time_elapsed_map)
+
+def giveReward(result, p1, p2):
+    if result == p1.symbol:
+        p1.feedReward(1)
+        p2.feedReward(0)
+    elif result == p2.symbol:
+        p1.feedReward(0)
+        p2.feedReward(1)
+    else:
+        p1.feedReward(0.1)
+        p2.feedReward(0.5)
+
+def compare_players_training(player1, player2, numGames):
+    game_count_map = {player1.symbol: 0, player2.symbol: 0, "TIE": 0}
+    time_elapsed_map = {player1.symbol: 0, player2.symbol: 0}
+    for i in range(1, numGames + 1):
+        # if i % 10 == 0:
+        #     # pass
+        #     print(i, "games finished")
+
+        # swap who goes first
+        if i % 2 == 0:
+            game = Game(player1, player2, show_status=False)
+        else:
+            game = Game(player2, player1, show_status=False)
+
+        winner = game.check_winner()
+        game_count_map[winner] += 1
+        giveReward(winner, player1, player2)
+        decision_times = game.get_decision_times()
+        for symbol in decision_times:
+            time_elapsed_map[symbol] += decision_times[symbol]
 
 def main():
     # game = Game(MinimaxPlayer("R"), MinimaxPlayer("Y"), show_status=True)
