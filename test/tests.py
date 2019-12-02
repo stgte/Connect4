@@ -34,6 +34,17 @@ def insertTest():
 
     return
 
+def boardToStringTest():
+    base = Board()
+    player = HumanPlayer("R")
+    base.insert(1, "R")
+    base.insert(0, "Y")
+    base.insert(1, "Y'")
+    base.insert(1, "R")
+    list = board_to_string(base, player)
+    print(len(list))
+    print(list)
+
 def improvement_demo():
     # compare_players(AlphaBetaPlayer("R", 2), AlphaBetaPlayer("Y", 2), 10)
     # compare_players(AlphaBetaPlayer("R", 2), AlphaBetaPlayer("Y", 4), 10)

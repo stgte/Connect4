@@ -2,6 +2,7 @@ from game.connect4Board import Board
 from game.connect4Players import *
 from datetime import datetime
 import copy
+from game.reinforcementTraining import ReinforcementAgent
 #Done by Josh
 
 
@@ -83,11 +84,11 @@ def compare_players(player1, player2, numGames):
 def main():
     # game = Game(MinimaxPlayer("R"), MinimaxPlayer("Y"), show_status=True)
     # compare_players(AlphaBetaPlayer("R"), MinimaxPlayer("Y"))
-    # compare_players(MinimaxPlayer("R"), AlphaBetaPlayer("Y"))
+    compare_players(RandomComputerPlayer("R"), ReinforcementAgent("Y"), 20)
     # game = Game(AlphaBetaPlayer("R"), MinimaxPlayer("Y"), show_status=True)
     # game = Game( MinimaxPlayer("R"), AlphaBetaPlayer("Y"), show_status=True)
     # game = Game(RandomComputerPlayer("R"), MinimaxPlayer("Y"), show_status=True)
-    game = Game(MinimaxPlayer("R"),AlphaBetaPlayer("Y", 8), show_status=True)
+    # game = Game(MinimaxPlayer("R"),AlphaBetaPlayer("Y", 8), show_status=True)
     # game = Game(HumanPlayer("R"), MinimaxPlayer("Y"), show_status=True)
 
 
