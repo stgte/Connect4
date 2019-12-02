@@ -2,11 +2,11 @@ from game.connect4Board import Board
 from game.connect4Players import *
 import numpy as np
 import random
-#Should take the connect 4 board and convert it to a list that can be input to the ML algorithm
-#List should be 4q elements long, one element for each of the 42 spaces on the board
-#Sets an empty space to 0, your space to 1, and enemy space to -1, will not be using a bias unit
+import pickle
 
 
+
+#Taking an input board and converting it to a string, useful for hashing
 
 def board_to_string(board, symbol):
     grid = board.board
@@ -34,6 +34,8 @@ class ReinforcementAgent:
         self.decay_gamma = decay_gamma
         self.symbol = symbol
 
+    def changeExp(self, rate):
+        self.exp_rate = rate
 
     def exploration_move(self, board):
         if np.random.uniform(0, 1) <= self.exp_rate: #exploratory move (random)
@@ -55,21 +57,46 @@ class ReinforcementAgent:
                     moveToMake = move
             return moveToMake
 
+    def best_move(self, board):
+        max = -inf
+        moves = board.getValidMoves()
+        random.shuffle(moves)
+        for move in moves:
+            nextBoard = copy.deepcopy(board)
+            nextBoard.insert(move, self.symbol)
+            boardString = board_to_string(nextBoard, self.symbol)
+            if self.state_vals.get(boardString) is None:
+                value = 0
+            else:
+                value = self.state_vals[boardString]
+            if value >= max:
+                max = value
+                moveToMake = move
+        if boardString not in self.states:
+            self.states.append(boardString)
+        return moveToMake
+
+    def feedReward(self, reward):
+        for state in reversed(self.states):
+            if self.state_vals.get(state) is None:
+                self.state_vals[state] = 0
+            self.state_vals[state] += self.lr * (self.decay_gamma * reward - self.state_vals[state])
+
+
+
+
     def get_move(self, board):
         return self.exploration_move(board)
 
-        #     value_max = -999
-        #     for p in positions:
-        #         next_board = current_board.copy()
-        #         next_board[p] = symbol
-        #         next_boardHash = self.getHash(next_board)
-        #         value = 0 if self.states_value.get(next_boardHash) is None else self.states_value.get(next_boardHash)
-        #         # print("value", value)
-        #         if value >= value_max:
-        #             value_max = value
-        #             action = p
-        #     # print("{} takes action {}".format(self.name, action))
-        # return action
+    def savePolicy(self, title):
+        fw = open('policy_' + str(title), 'wb')
+        pickle.dump(self.states_value, fw)
+        fw.close()
+
+    def loadPolicy(self, file):
+        fr = open(file, 'rb')
+        self.states_value = pickle.load(fr)
+        fr.close()
 
 
 
@@ -85,6 +112,7 @@ def test():
     list = board_to_string(base, player)
     print(len(list))
     print(list)
+
 
 
 def main():

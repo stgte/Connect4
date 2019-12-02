@@ -1,7 +1,8 @@
 
-from game.connect4Game import Game, compare_players
+from game.connect4Game import Game, compare_players, compare_players_training
 from game.connect4Players import *
 from game.connect4Board import Board
+from game.reinforcementTraining import *
 
 
 
@@ -55,10 +56,33 @@ def improvement_demo():
     # game = Game(AlphaBetaPlayer("R", 8), MinimaxPlayer("Y"), show_status=True)
     game = Game(AlphaBetaPlayer("R", 8), HumanPlayer("Y"), show_status=True)
 
+def reinforcement_round(trainerOne, trainerTwo, randomTester, numTrained, numDisplayed, roundComplete):
+    trainerOne.changeExp(0.3)
+    compare_players_training(trainerOne, trainerTwo, numTrained)
+    print(str((roundComplete + 1) * numTrained) +' games trained')
+    trainerOne.changeExp(0)
+    compare_players(trainerOne, randomTester, numDisplayed)
+
+
+
+#Results should get better each time
+def reinforcement_demo():
+    trainerOne = ReinforcementAgent("R")
+    trainerTwo = ReinforcementAgent("Y")
+    randomTester = RandomComputerPlayer("Y")
+    print('0 games trained')
+    compare_players(trainerOne, randomTester, 100)
+    for i in range(20):
+        reinforcement_round(trainerOne, trainerTwo, randomTester, 50, 100, i)
+
+
+    print("Complete")
+
+
 
 
 def main():
-    improvement_demo()
+    reinforcement_demo()
 
 
 
