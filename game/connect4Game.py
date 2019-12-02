@@ -92,9 +92,7 @@ def giveReward(result, p1, p2):
         p1.feedReward(0.1)
         p2.feedReward(0.5)
 
-def compare_players_training(player1, player2, numGames):
-    game_count_map = {player1.symbol: 0, player2.symbol: 0, "TIE": 0}
-    time_elapsed_map = {player1.symbol: 0, player2.symbol: 0}
+def trainPlayers(player1, player2, numGames):
     for i in range(1, numGames + 1):
         # if i % 10 == 0:
         #     # pass
@@ -107,11 +105,8 @@ def compare_players_training(player1, player2, numGames):
             game = Game(player2, player1, show_status=False)
 
         winner = game.check_winner()
-        game_count_map[winner] += 1
         giveReward(winner, player1, player2)
-        decision_times = game.get_decision_times()
-        for symbol in decision_times:
-            time_elapsed_map[symbol] += decision_times[symbol]
+
 
 def main():
     # game = Game(MinimaxPlayer("R"), MinimaxPlayer("Y"), show_status=True)

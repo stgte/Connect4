@@ -1,5 +1,5 @@
 
-from game.connect4Game import Game, compare_players, compare_players_training
+from game.connect4Game import Game, compare_players, trainPlayers
 from game.connect4Players import *
 from game.connect4Board import Board
 from game.reinforcementTraining import *
@@ -58,7 +58,7 @@ def improvement_demo():
 
 def reinforcement_round(trainerOne, trainerTwo, randomTester, numTrained, numDisplayed, roundComplete):
     trainerOne.changeExp(0.3)
-    compare_players_training(trainerOne, trainerTwo, numTrained)
+    trainPlayers(trainerOne, trainerTwo, numTrained)
     print(str((roundComplete + 1) * numTrained) +' games trained')
     trainerOne.changeExp(0)
     compare_players(trainerOne, randomTester, numDisplayed)
