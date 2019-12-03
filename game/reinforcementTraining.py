@@ -39,7 +39,13 @@ class ReinforcementAgent:
 
     def exploration_move(self, board):
         if np.random.uniform(0, 1) <= self.exp_rate: #exploratory move (random)
-            return random.choice(board.getValidMoves())
+            move = random.choice(board.getValidMoves())
+            nextBoard = copy.deepcopy(board)
+            nextBoard.insert(move, self.symbol)
+            boardString = board_to_string(nextBoard, self.symbol)
+
+            self.states.append(boardString)
+            return move
         else:
             max = -inf
             moves = board.getValidMoves()
@@ -55,6 +61,9 @@ class ReinforcementAgent:
                 if value >= max:
                     max = value
                     moveToMake = move
+                    stateToAdd = boardString
+
+            self.states.append(stateToAdd)
             return moveToMake
 
     def best_move(self, board):
@@ -82,8 +91,8 @@ class ReinforcementAgent:
                 self.state_vals[state] = 0
             self.state_vals[state] += self.lr * (self.decay_gamma * reward - self.state_vals[state])
 
-
-
+    def reset(self):
+        self.states = []
 
     def get_move(self, board):
         return self.exploration_move(board)
