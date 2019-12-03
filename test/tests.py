@@ -1,5 +1,5 @@
 
-from game.connect4Game import Game, compare_players, trainPlayers
+from game.connect4Game import *
 from game.connect4Players import *
 from game.connect4Board import Board
 from game.reinforcementTraining import *
@@ -85,12 +85,49 @@ def reinforcement_testing():
     #Saving states, issue is probably that states from each game carry over, which probably messes up learning
     #States getting carried over fixed, appears to be some change to state_vals but still no meaningful learning
 
+def testFeedForward():
+    #Should see the winning agent have higher values
+    agentOne, agentTwo = ReinforcementAgent("R"), ReinforcementAgent("Y")
+    game = Game(agentOne, agentTwo, show_status=False)
+    winner = game.check_winner()
+    giveReward(winner, agentOne, agentTwo)
+    listOne = agentOne.state_vals.values()
+    listTwo = agentTwo.state_vals.values()
+    avgOne = sum(listOne)/len(listOne)
+    avgTwo = sum(listTwo)/len(listTwo)
+    if winner == agentOne.symbol:
+        if (avgOne > avgTwo):
+            print("Success, the average of the winning agent is higher than the loser")
+        elif (avgTwo > avgOne):
+            print("Failure, the average of  the losing agent is higher than the winner")
+        else:
+            print("Failure, the averages are the same")
+    else:
+        if (avgTwo > avgOne):
+            print("Success, the average of the winning agent is higher than the loser")
+        elif (avgOne > avgTwo):
+            print("Failure, the average of  the losing agent is higher than the winner")
+        else:
+            print("Failure, the averages are the same")
 
+def showAgents():
+    agentOne, agentTwo = ReinforcementAgent("R"), ReinforcementAgent("Y")
+    for i in range(10):
+        print(str(i*1000) + " games trained")
+        game = Game(agentOne, agentTwo, show_status=True)
+        winner = game.check_winner()
+        agentOne.reset()
+        agentTwo.reset()
+        for j in range(1000):
+            game = Game(agentOne, agentTwo, show_status=False)
+            winner = game.check_winner()
+            giveReward(winner, agentOne, agentTwo)
+            agentOne.reset()
+            agentTwo.reset()
 
 
 def main():
-    reinforcement_demo()
-
+    showAgents()
 
 
 
