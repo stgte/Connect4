@@ -57,26 +57,33 @@ def improvement_demo():
     game = Game(AlphaBetaPlayer("R", 8), HumanPlayer("Y"), show_status=True)
 
 def reinforcement_round(trainerOne, trainerTwo, randomTester, numTrained, numDisplayed, roundComplete):
-    trainerOne.changeExp(0.3)
     trainPlayers(trainerOne, trainerTwo, numTrained)
     print(str((roundComplete + 1) * numTrained) +' games trained')
-    trainerOne.changeExp(0)
     compare_players(trainerOne, randomTester, numDisplayed)
 
 
 
 #Results should get better each time
 def reinforcement_demo():
-    trainerOne = ReinforcementAgent("R")
+    trainerOne = ReinforcementAgent("R", lr = .85)
     trainerTwo = ReinforcementAgent("Y")
     randomTester = RandomComputerPlayer("Y")
     print('0 games trained')
     compare_players(trainerOne, randomTester, 100)
     for i in range(20):
-        reinforcement_round(trainerOne, trainerTwo, randomTester, 50, 100, i)
+        reinforcement_round(trainerOne, trainerTwo, randomTester, 1000, 100, i)
 
 
     print("Complete")
+
+def reinforcement_testing():
+    trainerOne= ReinforcementAgent("R")
+    opp = ReinforcementAgent("Y")
+    trainPlayers(trainerOne, opp, 10)
+    print(trainerOne.states)
+    print(trainerOne.state_vals)
+    #Saving states, issue is probably that states from each game carry over, which probably messes up learning
+    #States getting carried over fixed, appears to be some change to state_vals but still no meaningful learning
 
 
 
