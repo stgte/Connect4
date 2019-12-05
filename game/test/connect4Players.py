@@ -1,0 +1,229 @@
+import random
+import copy
+from math import inf
+
+class HumanPlayer:
+    def __init__(self, symbol):
+        self.symbol = symbol
+
+    def get_move(self, board, node):
+        #takes player's move input
+        #returns move as an int
+        movelist= board.getValidMoves()
+        move = int(input("Enter column number:"))
+        while move not in movelist:
+            print("Invalid move")
+            move = int(input("Enter column number:"))
+        return node, move
+
+class RandomComputerPlayer:
+
+    def __init__(self, symbol):
+        self.symbol = symbol
+
+    def get_move(self, board):
+        return random.choice(board.getValidMoves())
+
+
+class TestAgent0:
+    def __init__(self, symbol):
+        self.symbol = symbol
+
+    def get_move(self, board):
+        return 0
+
+class MinimaxPlayer:
+
+    def __init__(self, symbol):
+        self.symbol = symbol
+
+    def get_move(self, board):
+        if len(board.getValidMoves()) == 1:
+            return board.getValidMoves()[0]
+        answer = minimax(board, 4, self.symbol, True)
+        return answer[0]
+
+
+def minimax(board, depth, symbol, max):
+    if max:
+        best = [-1, -inf]
+    else:
+        best = [-1, inf]
+
+    if (not board.stillGoing()):
+        return [-1, heuristic(board, symbol)]
+
+    elif depth == 0 or len(board.getValidMoves()) == 0:
+        return [-1, heuristic(board, symbol)]
+    moves = board.getValidMoves()
+    random.shuffle(moves)
+    for move in moves:
+        baseBoard = copy.deepcopy(board)
+        baseBoard.insert(move, symbol)
+        score = minimax(baseBoard, depth - 1, flipSymbol(symbol), not max)
+        score[0] = move
+
+        if max:
+            if score[1] > best[1]:
+                best = score
+
+        else:
+            if score[1] < best[1]:
+                best = score
+
+    return best
+
+def heuristic(board, symbol):
+    heur = 0
+    state = board.board
+    for i in range(0, board.rows):
+        for j in range(0, board.cols):
+            # check horizontal streaks
+            try:
+                if state[i][j] == state[i + 1][j] == symbol:
+                    heur += 10
+                if state[i][j] == state[i + 1][j] == state[i + 2][j] == symbol:
+                    heur += 100
+                if state[i][j] == state[i + 1][j] == state[i + 2][j] == state[i + 3][j] ==  symbol:
+                    heur += 10000
+
+                # subtract player two streak score to heur
+                if state[i][j] == state[i + 1][j] == flipSymbol(symbol):
+                    heur -= 10
+                if state[i][j] == state[i + 1][j] == state[i + 2][j] == flipSymbol(symbol):
+                    heur -= 100
+                if state[i][j] == state[i + 1][j] == state[i + 2][j] == state[i + 3][j] == flipSymbol(symbol):
+                    heur -= 10000
+            except IndexError:
+                pass
+
+            # check vertical streaks
+            try:
+                # add player one vertical streaks to heur
+                if state[i][j] == state[i][j + 1] ==  symbol:
+                    heur += 10
+                if state[i][j] == state[i][j + 1] == state[i][j + 2] == symbol:
+                    heur += 100
+                if state[i][j] == state[i][j + 1] == state[i][j + 2] == state[i][j + 3] ==  symbol:
+                    heur += 10000
+
+                # subtract player two streaks from heur
+                if state[i][j] == state[i][j + 1] == flipSymbol(symbol):
+                    heur -= 10
+                if state[i][j] == state[i][j + 1] == state[i][j + 2] == flipSymbol(symbol):
+                    heur -= 100
+                if state[i][j] == state[i][j + 1] == state[i][j + 2] == state[i][j + 3] == flipSymbol(symbol):
+                    heur -= 10000
+            except IndexError:
+                pass
+
+            # check positive diagonal streaks
+            try:
+                # add player one streaks to heur
+                if not j + 3 > board.cols and state[i][j] == state[i + 1][j + 1] ==  symbol:
+                    heur += 100
+                if not j + 3 > board.cols and state[i][j] == state[i + 1][j + 1] == state[i + 2][j + 2] ==  symbol:
+                    heur += 100
+                if not j + 3 > board.cols and state[i][j] == state[i + 1][j + 1] == state[i + 2][j + 2] \
+                        == state[i + 3][j + 3] == symbol:
+                    heur += 10000
+
+                # add player two streaks to heur
+                if not j + 3 > board.cols and state[i][j] == state[i + 1][j + 1] == flipSymbol(symbol):
+                    heur -= 100
+                if not j + 3 > board.cols and state[i][j] == state[i + 1][j + 1] == state[i + 2][j + 2] == flipSymbol(symbol):
+                    heur -= 100
+                if not j + 3 > board.cols and state[i][j] == state[i + 1][j + 1] == state[i + 2][j + 2] \
+                        == state[i + 3][j + 3] == flipSymbol(symbol):
+                    heur -= 10000
+            except IndexError:
+                pass
+
+            # check negative diagonal streaks
+            try:
+                # add  player one streaks
+                if not j - 3 < 0 and state[i][j] == state[i + 1][j - 1] ==  symbol:
+                    heur += 10
+                if not j - 3 < 0 and state[i][j] == state[i + 1][j - 1] == state[i + 2][j - 2] ==  symbol:
+                    heur += 100
+                if not j - 3 < 0 and state[i][j] == state[i + 1][j - 1] == state[i + 2][j - 2] \
+                        == state[i + 3][j - 3] == symbol:
+                    heur += 10000
+
+                # subtract player two streaks
+                if not j - 3 < 0 and state[i][j] == state[i + 1][j - 1] == flipSymbol(symbol):
+                    heur -= 10
+                if not j - 3 < 0 and state[i][j] == state[i + 1][j - 1] == state[i + 2][j - 2] == flipSymbol(symbol):
+                    heur -= 100
+                if not j - 3 < 0 and state[i][j] == state[i + 1][j - 1] == state[i + 2][j - 2] \
+                        == state[i + 3][j - 3] == flipSymbol(symbol):
+                    heur -= 10000
+            except IndexError:
+                pass
+    return heur
+
+
+class AlphaBetaPlayer:
+    def __init__(self, symbol, depth):
+        self.symbol = symbol
+        self.depth = depth
+
+    def get_move(self, board, currentNode):
+        if len(board.getValidMoves()) == 1:
+            return currentNode, board.getValidMoves()[0]
+        answer = AlphaBeta(board, self.depth, self.symbol)
+        return currentNode, answer[0]
+
+
+def AlphaBeta(board, depth, symbol):
+    def max_value(board, alpha, beta, symbol, depth):
+        if not board.stillGoing():
+            return [-1, heuristic(board, symbol)]
+
+        elif depth == 0 or len(board.getValidMoves()) == 0:
+            return [-1, -1, heuristic(board, symbol)]
+        best = [-1, -inf]
+        moves=board.getValidMoves()
+        random.shuffle(moves)
+        for move in moves:
+            copied_board = copy.deepcopy(board)
+            copied_board.insert1( move, symbol)
+            score = min_value(copied_board, alpha, beta, flipSymbol(symbol), depth - 1)
+            if best[1] < score[1]:
+                best[1] = score[1]
+                best[0] = move
+            if best[1] >= beta:
+                return best
+            alpha = max(alpha, best[1])
+        return best
+
+    def min_value(board, alpha, beta, symbol, depth):
+        if not board.stillGoing():
+            return [-1, -1,heuristic(board, symbol)]
+        elif depth == 0 or len(board.getValidMoves()) == 0:
+            return [-1, heuristic(board, symbol)]
+
+        best = [-1, inf]
+        moves = board.getValidMoves()
+        random.shuffle(moves)
+        for move in moves:
+            copied_board = copy.deepcopy(board)
+            copied_board.insert1(move, symbol)
+            score = max_value(copied_board, alpha, beta, flipSymbol(symbol), depth - 1)
+            if best[1] > score[1]:
+                best[1] = score[1]
+                best[0] = move
+            if best[1] <= alpha:
+                return best
+            beta = min(beta, best[1])
+        return best
+
+    return max_value(board, -inf, inf, symbol, depth)
+
+
+
+def flipSymbol(symbol):
+    if symbol == 1:
+        return 0
+    else:
+        return 1
