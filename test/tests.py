@@ -112,22 +112,68 @@ def testFeedForward():
 
 def showAgents():
     agentOne, agentTwo = ReinforcementAgent("R"), ReinforcementAgent("Y")
-    for i in range(10):
-        print(str(i*1000) + " games trained")
-        game = Game(agentOne, agentTwo, show_status=True)
+    for j in range(1000000):
+        if j % 5000 == 0:
+            print(str(j) + " games complete")
+            agentOne.changeExp(0)
+            compare_players(agentOne, RandomComputerPlayer("Y"), 100)
+            agentOne.reset()
+            agentOne.changeExp(0.3)
+        if j%2 == 0:
+            game = Game(agentOne, agentTwo, show_status=False)
+        else:
+            game = Game(agentTwo, agentOne, show_status=False)
         winner = game.check_winner()
+        giveReward(winner, agentOne, agentTwo)
         agentOne.reset()
         agentTwo.reset()
-        for j in range(1000):
-            game = Game(agentOne, agentTwo, show_status=False)
-            winner = game.check_winner()
-            giveReward(winner, agentOne, agentTwo)
-            agentOne.reset()
-            agentTwo.reset()
+    compare_players(agentOne, RandomComputerPlayer("Y"), 100)
+    agentOne.savePolicy("millionGames")
+
+def displayLearning(trainer, opp, title):
+    for i in range(201):
+        print(str(i * 5000) + " practice games")
+        trainer.changeExp(0)
+        compare_players(trainer, opp, 100)
+        trainer.changeExp(0.3)
+        trainer.reset()
+        trainAgainst(trainer, opp, 5000)
+    trainer.savePolicy(title)
+
+def flipTest():
+    board1 = Board()
+    board2 = Board()
+    board1.insert(0, 'R')
+    board2.insert(6, 'R')
+    firstString = board_to_string(board1, 'R')
+    secondString = board_to_string(board2, 'R')
+    secondString = flip_string(secondString)
+    print("Should be True: " + str(firstString == secondString))
+    board1 = Board()
+    board2 = Board()
+    board1.insert(1, 'Y')
+    board2.insert(5, 'Y')
+    board1.insert(3, 'R')
+    board2.insert(3, 'R')
+    firstString = board_to_string(board1, 'R')
+    secondString = board_to_string(board2, 'R')
+    secondString = flip_string(secondString)
+    print("Should be True: " + str(firstString == secondString))
+    board1 = Board()
+    board2 = Board()
+    board1.insert(1, 'Y')
+    firstString = board_to_string(board1, 'R')
+    secondString = board_to_string(board2, 'R')
+    secondString = flip_string(secondString)
+    print("Should be False: " + str(firstString == secondString))
+
 
 
 def main():
-    showAgents()
+    RLAgent = ReinforcementAgent("R")
+    RLAgent.loadPolicy('policy_vsABDepth2')
+    displayLearning(RLAgent, RandomComputerPlayer("Y"), 'vsRandom')
+
 
 
 
