@@ -89,14 +89,20 @@ def giveReward(result, p1, p2):
         p1.feedReward(0)
         p2.feedReward(1)
     else:
-        p1.feedReward(0.1)
+        p1.feedReward(0.5)
         p2.feedReward(0.5)
+
+def giveRewardToOne(result, p1):
+    if result == p1.symbol:
+        p1.feedReward(1)
+    elif result is None:
+        p1.feedReward(0.5)
+    else:
+        p1.feedReward(0)
 
 def trainPlayers(player1, player2, numGames):
     for i in range(1, numGames + 1):
-        # if i % 10 == 0:
-        #     # pass
-        #     print(i, "games finished")
+
 
         # swap who goes first
         if i % 2 == 0:
@@ -106,6 +112,18 @@ def trainPlayers(player1, player2, numGames):
 
         winner = game.check_winner()
         giveReward(winner, player1, player2)
+        player1.reset()
+        player2.reset()
+
+def trainAgainst(trainer, opp, numGames):
+    for i in range(1, numGames + 1):
+        if i % 2 == 0:
+            game = Game(trainer, opp, show_status=False)
+        else:
+            game = Game(opp, trainer, show_status=False)
+        winner = game.check_winner()
+        giveRewardToOne(winner, trainer)
+        trainer.reset()
 
 
 def main():

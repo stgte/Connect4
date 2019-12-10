@@ -22,6 +22,21 @@ def board_to_string(board, symbol):
                 list = list + '2'
     return list
 
+def flip_string(boardString):
+    columns = []
+    for i in range(7):
+        firstPlace = i * 6
+        secondPlace = (i + 1) * 6
+        column = boardString[firstPlace:secondPlace]
+        columns.append(column)
+    flippedString = ''
+    for j in range(7):
+        flippedString = flippedString + columns[6 - j]
+    return flippedString
+
+def flip_column(column):
+    return 6 - column
+
 
 
 class ReinforcementAgent:
@@ -39,7 +54,13 @@ class ReinforcementAgent:
 
     def exploration_move(self, board):
         if np.random.uniform(0, 1) <= self.exp_rate: #exploratory move (random)
-            return random.choice(board.getValidMoves())
+            move = random.choice(board.getValidMoves())
+            nextBoard = copy.deepcopy(board)
+            nextBoard.insert(move, self.symbol)
+            boardString = board_to_string(nextBoard, self.symbol)
+
+            self.states.append(boardString)
+            return move
         else:
             max = -inf
             moves = board.getValidMoves()
@@ -48,13 +69,22 @@ class ReinforcementAgent:
                 nextBoard = copy.deepcopy(board)
                 nextBoard.insert(move, self.symbol)
                 boardString = board_to_string(nextBoard, self.symbol)
-                if self.state_vals.get(boardString) is None:
-                    value = 0
-                else:
+                flipped = False
+                if self.state_vals.get(boardString) is not None:
                     value = self.state_vals[boardString]
+                elif self.state_vals.get(flip_string(boardString)) is not None:
+                    value = self.state_vals[flip_string(boardString)]
+                    flipped = True
+                else:
+                    value = 0
                 if value >= max:
                     max = value
                     moveToMake = move
+                    stateToAdd = boardString
+                    if flipped:
+                        moveToMake = flip_column(moveToMake)
+                        stateToAdd = flip_string(stateToAdd)
+            self.states.append(stateToAdd)
             return moveToMake
 
     def best_move(self, board):
@@ -82,20 +112,20 @@ class ReinforcementAgent:
                 self.state_vals[state] = 0
             self.state_vals[state] += self.lr * (self.decay_gamma * reward - self.state_vals[state])
 
-
-
+    def reset(self):
+        self.states = []
 
     def get_move(self, board):
         return self.exploration_move(board)
 
     def savePolicy(self, title):
         fw = open('policy_' + str(title), 'wb')
-        pickle.dump(self.states_value, fw)
+        pickle.dump(self.state_vals, fw)
         fw.close()
 
     def loadPolicy(self, file):
         fr = open(file, 'rb')
-        self.states_value = pickle.load(fr)
+        self.state_vals = pickle.load(fr)
         fr.close()
 
 
@@ -103,15 +133,33 @@ class ReinforcementAgent:
 
 
 def test():
-    base = Board()
-    player = HumanPlayer("R")
-    base.insert(1, "R")
-    base.insert(0, "Y")
-    base.insert(1, "Y'")
-    base.insert(1, "R")
-    list = board_to_string(base, player)
-    print(len(list))
-    print(list)
+    board1 = Board()
+    board2 = Board()
+    board1.insert(0, 'R')
+    board2.insert(6, 'R')
+    firstString = board_to_string(board1, 'R')
+    secondString = board_to_string(board2, 'R')
+    secondString = flip_string(secondString)
+    print("Should be True: " + str(firstString == secondString))
+    board1 = Board()
+    board2 = Board()
+    board1.insert(1, 'Y')
+    board2.insert(5, 'Y')
+    board1.insert(3, 'R')
+    board2.insert(3, 'R')
+    firstString = board_to_string(board1, 'R')
+    secondString = board_to_string(board2, 'R')
+    secondString = flip_string(secondString)
+    print("Should be True: " + str(firstString == secondString))
+    board1 = Board()
+    board2 = Board()
+    board1.insert(1, 'Y')
+    firstString = board_to_string(board1, 'R')
+    secondString = board_to_string(board2, 'R')
+    secondString = flip_string(secondString)
+    print("Should be False: " + str(firstString == secondString))
+
+
 
 
 
