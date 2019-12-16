@@ -22,6 +22,7 @@ def board_to_string(board, symbol):
                 list = list + '2'
     return list
 
+#Takes a board string and returns the same board state flipped over the vertical axis
 def flip_string(boardString):
     columns = []
     for i in range(7):
@@ -34,6 +35,7 @@ def flip_string(boardString):
         flippedString = flippedString + columns[6 - j]
     return flippedString
 
+#Returns the flipped column, for example turns the first column (index 0) into the last column (index 6)
 def flip_column(column):
     return 6 - column
 
@@ -49,7 +51,7 @@ class ReinforcementAgent:
         self.decay_gamma = decay_gamma
         self.symbol = symbol
 
-    def changeExp(self, rate):
+    def change_exp(self, rate):
         self.exp_rate = rate
 
     def exploration_move(self, board):
@@ -72,7 +74,7 @@ class ReinforcementAgent:
                 flipped = False
                 if self.state_vals.get(boardString) is not None:
                     value = self.state_vals[boardString]
-                elif self.state_vals.get(flip_string(boardString)) is not None:
+                elif self.state_vals.get(flip_string(boardString)) is not None: #checks if you've seen the flipped board state
                     value = self.state_vals[flip_string(boardString)]
                     flipped = True
                 else:
@@ -82,48 +84,32 @@ class ReinforcementAgent:
                     moveToMake = move
                     stateToAdd = boardString
                     if flipped:
-                        moveToMake = flip_column(moveToMake)
+                        moveToMake = flip_column(moveToMake) #If you are basing your choice off the flipped board adds the correct board state and returns the correct move
                         stateToAdd = flip_string(stateToAdd)
             self.states.append(stateToAdd)
             return moveToMake
 
-    def best_move(self, board):
-        max = -inf
-        moves = board.getValidMoves()
-        random.shuffle(moves)
-        for move in moves:
-            nextBoard = copy.deepcopy(board)
-            nextBoard.insert(move, self.symbol)
-            boardString = board_to_string(nextBoard, self.symbol)
-            if self.state_vals.get(boardString) is None:
-                value = 0
-            else:
-                value = self.state_vals[boardString]
-            if value >= max:
-                max = value
-                moveToMake = move
-        if boardString not in self.states:
-            self.states.append(boardString)
-        return moveToMake
-
-    def feedReward(self, reward):
+    #Backpropogates to reward/punish good/bad moves
+    def feed_reward(self, reward):
         for state in reversed(self.states):
             if self.state_vals.get(state) is None:
                 self.state_vals[state] = 0
             self.state_vals[state] += self.lr * (self.decay_gamma * reward - self.state_vals[state])
-
+            reward = self.state_vals[state]
+    #Need to empty states after each game
     def reset(self):
         self.states = []
 
     def get_move(self, board):
+
         return self.exploration_move(board)
 
-    def savePolicy(self, title):
+    def save_policy(self, title):
         fw = open('policy_' + str(title), 'wb')
         pickle.dump(self.state_vals, fw)
         fw.close()
 
-    def loadPolicy(self, file):
+    def load_policy(self, file):
         fr = open(file, 'rb')
         self.state_vals = pickle.load(fr)
         fr.close()

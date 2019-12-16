@@ -115,10 +115,10 @@ def showAgents():
     for j in range(1000000):
         if j % 5000 == 0:
             print(str(j) + " games complete")
-            agentOne.changeExp(0)
+            agentOne.change_exp(0)
             compare_players(agentOne, RandomComputerPlayer("Y"), 100)
             agentOne.reset()
-            agentOne.changeExp(0.3)
+            agentOne.change_exp(0.3)
         if j%2 == 0:
             game = Game(agentOne, agentTwo, show_status=False)
         else:
@@ -128,17 +128,17 @@ def showAgents():
         agentOne.reset()
         agentTwo.reset()
     compare_players(agentOne, RandomComputerPlayer("Y"), 100)
-    agentOne.savePolicy("millionGames")
+    agentOne.save_policy("millionGames")
 
 def displayLearning(trainer, opp, title):
     for i in range(201):
         print(str(i * 5000) + " practice games")
-        trainer.changeExp(0)
+        trainer.change_exp(0)
         compare_players(trainer, opp, 100)
-        trainer.changeExp(0.3)
+        trainer.change_exp(0.3)
         trainer.reset()
         trainAgainst(trainer, opp, 5000)
-    trainer.savePolicy(title)
+    trainer.save_policy(title)
 
 def flipTest():
     board1 = Board()
@@ -171,8 +171,9 @@ def flipTest():
 
 def main():
     RLAgent = ReinforcementAgent("R")
-    RLAgent.loadPolicy('policy_vsABDepth2')
-    displayLearning(RLAgent, RandomComputerPlayer("Y"), 'vsRandom')
+
+
+
 
 
 

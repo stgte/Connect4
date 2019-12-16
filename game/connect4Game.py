@@ -83,22 +83,22 @@ def compare_players(player1, player2, numGames):
 
 def giveReward(result, p1, p2):
     if result == p1.symbol:
-        p1.feedReward(1)
-        p2.feedReward(0)
+        p1.feed_reward(1)
+        p2.feed_reward(0)
     elif result == p2.symbol:
-        p1.feedReward(0)
-        p2.feedReward(1)
+        p1.feed_reward(0)
+        p2.feed_reward(1)
     else:
-        p1.feedReward(0.5)
-        p2.feedReward(0.5)
+        p1.feed_reward(0.5)
+        p2.feed_reward(0.5)
 
 def giveRewardToOne(result, p1):
     if result == p1.symbol:
-        p1.feedReward(1)
+        p1.feed_reward(1)
     elif result is None:
-        p1.feedReward(0.5)
+        p1.feed_reward(0.5)
     else:
-        p1.feedReward(0)
+        p1.feed_reward(0)
 
 def trainPlayers(player1, player2, numGames):
     for i in range(1, numGames + 1):
