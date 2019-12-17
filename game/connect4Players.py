@@ -1,7 +1,7 @@
 import random
 import copy
 from math import inf
-from reinforcementTraining import ReinforcementAgent
+
 
 class HumanPlayer:
     def __init__(self, symbol):
