@@ -171,6 +171,9 @@ def flipTest():
 
 def main():
     RLAgent = ReinforcementAgent("R")
+    RLAgent.load_policy("policy_vsABDepth2")
+    RLAgent.change_exp(0)
+    game = Game(RLAgent, HumanPlayer("Y"), show_status=True)
 
 
 
