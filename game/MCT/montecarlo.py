@@ -1,7 +1,7 @@
 import copy
 import time
 import random
-from game.test.Node import Node
+from game.MCT.Node import Node
 
 
 class MCTPlayer:
@@ -14,27 +14,24 @@ class MCTPlayer:
 
 
 def MCTS(currentState, itermax, currentNode=None, timeout=100):
-    rootnode = Node(state=currentState)
-    if currentNode is not None: rootnode = currentNode
-
-    #    print(rootnode.wins, rootnode.visits)
-    #    for child in rootnode.childNodes:
-    #        print(child.move, child.wins, child.visits)
+    root = Node(state=currentState)
+    
+    if currentNode is not None: root = currentNode
 
     start = time.clock()
     for i in range(itermax):
-        node = rootnode
+        node = root
         state = currentState.Clone()
 
         # selection
         # keep going down the tree based on best UCT values until terminal or unexpanded node
-        while node.untriedMoves == [] and node.childNodes != []:
+        while node.untried == [] and node.children != []:
             node = node.selection()
             state.insert(node.move)
 
         # expand
-        if node.untriedMoves != []:
-            m = random.choice(node.untriedMoves)
+        if node.untried != []:
+            m = random.choice(node.untried)
             state.insert(m)
             node = node.expand(m, state)
 
@@ -50,10 +47,10 @@ def MCTS(currentState, itermax, currentNode=None, timeout=100):
         duration = time.clock() - start
         if duration > timeout: break
 
-    foo = lambda x: x.wins / x.visits
-    sortedChildNodes = sorted(rootnode.childNodes, key=foo)[::-1]
+    score = lambda x: x.wins / x.visits
+    sortedChildNodes = sorted(root.children, key=score)[::-1]
     # print("AI\'s computed winning percentages")
     # for node in sortedChildNodes:
     #     print('Move: %s    Win Rate: %.2f%%' % (node.move , 100 * node.wins / node.visits))
     # print('Simulations performed: %s\n' % i)
-    return rootnode, sortedChildNodes[0].move
+    return root, sortedChildNodes[0].move

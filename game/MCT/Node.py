@@ -6,23 +6,23 @@ class Node:
         self.state = state.Clone()
         self.parent = parent
         self.move = move
-        self.untriedMoves = state.getValidMoves()
-        self.childNodes = []
+        self.untried = state.getValidMoves()
+        self.children = []
         self.wins = 0
         self.visits = 0
         self.player = state.player
 
     def selection(self):
-        # return child with largest UCT value
-        foo = lambda x: x.wins /x.visits + np.sqrt( 2 *np.log(self.visits ) /x.visits)
-        return sorted(self.childNodes, key=foo)[-1]
+        # select largest score value
+        score = lambda x: x.wins /x.visits + np.sqrt( 2 *np.log(self.visits ) /x.visits)
+        return sorted(self.children, key=score)[-1]
 
     def expand(self, move, state):
         # return child when move is taken
         # remove move from current node
         child = Node(move=move, parent=self, state=state)
-        self.untriedMoves.remove(move)
-        self.childNodes.append(child)
+        self.untried.remove(move)
+        self.children.append(child)
         return child
 
     def update(self, result):
