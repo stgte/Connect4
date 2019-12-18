@@ -2,6 +2,7 @@ import random
 import copy
 from math import inf
 
+
 class HumanPlayer:
     def __init__(self, symbol):
         self.symbol = symbol
@@ -227,3 +228,5 @@ def flipSymbol(symbol):
         return 'Y'
     else:
         return 'R'
+
+
