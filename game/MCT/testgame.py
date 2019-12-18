@@ -1,9 +1,9 @@
-from game.test.connect4Board import Board
+from game.MCT.connect4Board import Board
 from datetime import datetime
 import copy
-from game.test.montecarlo import MCTPlayer
-from game.test.connect4Players import AlphaBetaPlayer
-from game.test.Node import Node
+from game.MCT.montecarlo import MCTPlayer
+from game.MCT.connect4Players import AlphaBetaPlayer
+from game.MCT.Node import Node
 #Done by Josh
 
 
@@ -50,13 +50,13 @@ class Game:
                 print("Error: invalid move made")
             else:
                 self.board.insert(chosen_move)
-                node = self.goto_childNode(node,chosen_move)
+                node = self.goto_childnode(node,chosen_move)
         if self.show_status:
             self.board.printBoard()
         return node
 
-    def goto_childNode(self, node, move):
-        for childnode in node.childNodes:
+    def goto_childnode(self, node, move):
+        for childnode in node.children:
             if childnode.move == move:
                 return childnode
         return Node(state=self.board.Clone())
@@ -81,15 +81,17 @@ def compare_players(player1, player2, numGames):
     game_count_map = {player1.symbol: 0, player2.symbol: 0, "TIE": 0}
     time_elapsed_map = {player1.symbol: 0, player2.symbol: 0}
     for i in range(1, numGames + 1):
-        if i % 1 == 0:
+        if i % 10 == 1:
             # pass
             print(i, "games finished")
+            print(game_count_map[0],"\t",game_count_map[1] )
+            print(time_elapsed_map[0],"\t",time_elapsed_map[1] )
 
         # swap who goes first
         if i % 2 == 0:
-            game = Game(player1, player2, show_status=True)
+            game = Game(player1, player2, show_status=False)
         else:
-            game = Game(player2, player1, show_status=True)
+            game = Game(player2, player1, show_status=False)
         # game = Game(player1, player2, show_status=True)
         game_count_map[game.compare_winner()] += 1
         decision_times = game.get_decision_times()
@@ -99,10 +101,11 @@ def compare_players(player1, player2, numGames):
     print(time_elapsed_map)
 
 def main():
-    # game = Game(MCTPlayer(0), AlphaBetaPlayer(1,2), show_status=True)
+    game = Game(MCTPlayer(0), AlphaBetaPlayer(1,2), show_status=True)
     # compare_players(MCTPlayer(0),MCTPlayer(1), 5)
-    compare_players(MCTPlayer(0), AlphaBetaPlayer(1, 2), 5)
-    compare_players(AlphaBetaPlayer(0, 2), MCTPlayer(1), 5)
+
+    # compare_players(MCTPlayer(0), AlphaBetaPlayer(1, 4), 10000)
+    # compare_players(AlphaBetaPlayer(0, 4), MCTPlayer(1), 5)
     # game = Game(AlphaBetaPlayer(0, 2), AlphaBetaPlayer(1, 2), show_status=True)
     print("Finished")
 

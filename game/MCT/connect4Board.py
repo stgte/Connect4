@@ -121,14 +121,15 @@ class Board:
         for line in chain(*lines):
             for color, group in groupby(line):
                 if color != NONE and len(list(group)) >= self.win:
+                    # print(color)
                     return c==color
         return False
 
     def gotWinner(self, player):
         if self.winner(player):
-            return 'player 1'  # player wins
+            return 'player '+str(self.player)  # player wins
         elif self.winner(player^1):
-            return 'player 2' # if opponent wins
+            return 'player ' +str(self.player)# if opponent wins
         elif self.draw():
             return 'TIE'
 
