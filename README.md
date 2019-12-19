@@ -32,11 +32,16 @@ Unit Testing FrameWork: We made our own functions to test insert as well as chec
 
 Advanced AI:
 
+Reinforcement Learning: Josh
+
 One technique we want to apply is reinforcement learning. The idea is that we will have two agents that start with no idea how to play Connect 4 play many many games against each other, rewarding their moves when they win and punishing them when they lose. Eventually, we should have a highly effective agent, hopefully one that has solved the game. We've mainly been learning about implementation through various tech blogs.
 
 This technique is often used for games, most of the examples I've found are for turn based games like checkers or chess, but I've also seen examples that play the game snake. Obviously if this technique is used a lot for turn based games then it should apply to Connect 4 quite well. The main challenge is probably going to be tuning the exploration rate as we go, so that the agent continues exploring new moves but also holds on to old, effective moves so it doesn't forget the progress it makes.
 
 Primary Resources for Reinforcement Learning - https://skymind.ai/wiki/deep-reinforcement-learning, https://towardsdatascience.com/reinforcement-learning-implement-tictactoe-189582bea542
+
+
+MCTS: Tea and Christian
 
 Monte Carlo Tree Search - The idea behind this algorithm is to create a game tree, but instead of exploring all the possible games, only the most promising routes are chosen. It is a heuristic driven search algorithm that combines the classic tree search implementations alongside machine learning principles of reinforcement learning. In tree search, there’s always the possibility that the current best action is actually not the most optimal action. In such cases, MCTS algorithm becomes useful as it continues to evaluate other alternatives periodically during the learning phase by executing them, instead of the current perceived optimal strategy.
 
@@ -46,3 +51,13 @@ Resources:
 https://towardsdatascience.com/from-scratch-implementation-of-alphazero-for-connect4-f73d4554002a
 
 
+Results:
+Both algorithms were very succesful, but MCTS was by far more effective. Through training the reinforcement agent was able to achieve a win rate over 90% against random agents, and a winrate  of around 70% against AB depth 2.
+MCTS, with a timeout of only 2 seconds, had a 92.3 winrate against AB depth 4, aand 89.7% against AB depth 8.
+Anecdotally, of about a dozen games against people during our demo, MCTS won every time.
+
+How to try it out:
+To play against MCTS simply go into the testgame.py file in the MCTS folder and run a game. You can change the timeout of MCTS in the montecarlo.py file. For MCTS, due to changes that had to be made to the game board, assign the symbol as either 1 or 0. To play against the reinforcement agent, simply go into tests.py in the test folder.
+ Assign a variable to ReinforcementAgent, with either "R" or "Y" as the symbol. To prevent exploratory moves during your game type yourVariable.change_exp(0) to change the exploration rate. 
+ Next, load whatever policy you want with yourVariable.load_policy("policy"). (Unfortunately you cannot use our policies, as the files are too large for github) Finally, just run a game with game = Game(yourVariable, HumanPlayer("symbol"), show_status=True).
+In order to train reinforcement agent use the trainAgainst function in game.connect4Game, in order to see results as your agent trains use the displayLearning function in game.test.tests.py.
