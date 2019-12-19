@@ -129,12 +129,12 @@ def trainAgainst(trainer, opp, numGames):
 def main():
     # game = Game(MinimaxPlayer("R"), MinimaxPlayer("Y"), show_status=True)
     # compare_players(AlphaBetaPlayer("R"), MinimaxPlayer("Y"))
-    compare_players(RandomComputerPlayer("R"), ReinforcementAgent("Y"), 20)
+    # compare_players(RandomComputerPlayer("R"), MinimaxPlayer("Y"), 40)
     # game = Game(AlphaBetaPlayer("R"), MinimaxPlayer("Y"), show_status=True)
     # game = Game( MinimaxPlayer("R"), AlphaBetaPlayer("Y"), show_status=True)
     # game = Game(RandomComputerPlayer("R"), MinimaxPlayer("Y"), show_status=True)
     # game = Game(MinimaxPlayer("R"),AlphaBetaPlayer("Y", 8), show_status=True)
-    # game = Game(HumanPlayer("R"), MinimaxPlayer("Y"), show_status=True)
+    game = Game(HumanPlayer("R"), MinimaxPlayer("Y"), show_status=True)
 
 
     # game = Game(HumanPlayer("R"), HumanPlayer("Y"), show_status=True)

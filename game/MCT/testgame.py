@@ -3,7 +3,6 @@ from datetime import datetime
 import copy
 from game.MCT.montecarlo import MCTPlayer
 from game.MCT.connect4Players import AlphaBetaPlayer, HumanPlayer
-0`
 from game.MCT.Node import Node
 #Done by Josh
 
